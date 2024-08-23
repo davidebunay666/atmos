@@ -34,7 +34,7 @@ jobs:
       - name: Plan Atmos dns-clouflare Component
         uses: cloudposse/github-action-atmos-terraform-plan@v2
         with:
-          #atmos-version: 1.87.0
+          atmos-version: 1.87.0
           component: "station"
           stack: "staging"
           debug: true
