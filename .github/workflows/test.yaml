@@ -1,0 +1,50 @@
+name: plan cloudflare components with atmos terraform Nonprod
+
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+    #paths:
+     # - 'componentes/**'
+      #- 'stacks/**'
+      #- '.github/workflows/plan-patiotuerca-atmos-terraform-cloudflare-nonprod.yaml'
+
+concurrency: plan-ci-cloudflare-atmos-terraform-non-prod-${{ github.ref_name }}
+
+jobs: 
+  plan-cloudflare-atmos-terraform:
+    runs-on: ubuntu-latest
+    #defaults:
+      #run:
+        #working-directory: ./
+    permissions:
+      id-token: write
+      contents: write
+      actions: write
+    steps:
+      #- name: Checkout repository
+      #a  uses: actions/checkout@v4
+
+      #- name: Setup Atmos
+      #  uses: cloudposse/github-action-setup-atmos@v2
+      #  with:
+      #    # Make sure to pin to the latest version of atmos
+      #    atmos-version: 1.86.2
+      - name: Plan Atmos dns-clouflare Component
+        uses: cloudposse/github-action-atmos-terraform-plan@v2
+        with:
+          #atmos-version: 1.87.0
+          component: "myapp"
+          stack: "dev"
+          debug: true
+          drift-detection-mode-enabled: true
+          #atmos-config-path: ./
+          atmos-config-path: ./atmos.yaml
+      - name: Generate Summary
+        run: |
+          echo "### GITHUB_ENV Contents" >> $GITHUB_STEP_SUMMARY
+          echo $GITHUB_ENV >> $GITHUB_STEP_SUMMARY
+          echo $GITHUB_OUTPUT >> $GITHUB_STEP_SUMMARY
+          echo "terraform-state-role=$(atmos describe config -f json | jq -r '.integrations.github.gitops["artifact-storage"].role')" >> $GITHUB_STEP_SUMMARY
+          cat $GITHUB_OUTPUT
