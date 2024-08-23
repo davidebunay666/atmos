@@ -35,8 +35,8 @@ jobs:
         uses: cloudposse/github-action-atmos-terraform-plan@v2
         with:
           #atmos-version: 1.87.0
-          component: "myapp"
-          stack: "dev"
+          component: "station"
+          stack: "staging"
           debug: true
           drift-detection-mode-enabled: true
           #atmos-config-path: ./
