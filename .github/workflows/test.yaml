@@ -40,7 +40,7 @@ jobs:
           debug: true
           drift-detection-mode-enabled: true
           #atmos-config-path: ./
-          atmos-config-path: ./atmos.yaml
+          atmos-config-path: ./examples/quick-start-simple/atmos.yaml
       - name: Generate Summary
         run: |
           echo "### GITHUB_ENV Contents" >> $GITHUB_STEP_SUMMARY
